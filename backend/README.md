@@ -1,11 +1,10 @@
 When installing using pip, run:
-
-    ```shell
-    pip freeze > requirements.txt
-    ```
+```console
+pip freeze > requirements.txt
+```
 
 To install, run
 
-    ```shell
-    pip install -r requirements.txt
-    ```
+```console
+pip install -r requirements.txt
+```
