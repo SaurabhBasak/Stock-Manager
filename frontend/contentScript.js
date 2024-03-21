@@ -12,9 +12,10 @@
     });
 
     const newStockAdded = async () => {
-        const addStockBtnExists = document.getElementsByClassName("add-stock-btn")[0];
+        const addStockBtnExists =
+            document.getElementsByClassName("add-stock-btn")[0];
         const isStock = document.getElementsByClassName("REySof")[0];
-        
+
         if (!addStockBtnExists && isStock) {
             const addStockBtn = document.createElement("button");
 

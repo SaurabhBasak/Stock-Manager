@@ -1,4 +1,4 @@
-chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+chrome.tabs.onUpdated.addListener( async (tabId, changeInfo) => {
     if (changeInfo.status === "complete") {
         chrome.tabs.get(tabId, function (tab) {
             if (tab.url && tab.url.includes("google.com/search")) {
