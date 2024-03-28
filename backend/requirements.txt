@@ -6,6 +6,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
 Flask==3.0.2
+Flask-Cors==4.0.0
 frozendict==2.4.0
 html5lib==1.1
 idna==3.6
@@ -18,13 +19,10 @@ numpy==1.26.4
 pandas==2.2.1
 peewee==3.17.1
 python-dateutil==2.9.0.post0
-python-http-client==3.3.7
 pytz==2024.1
 requests==2.31.0
-sendgrid==6.11.0
 six==1.16.0
 soupsieve==2.5
-starkbank-ecdsa==2.2.0
 tzdata==2024.1
 urllib3==2.2.1
 webencodings==0.5.1
