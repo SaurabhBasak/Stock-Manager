@@ -4,14 +4,35 @@
 
     chrome.runtime.onMessage.addListener((object, sender, response) => {
         const { type, value, stockId } = object;
+        console.log(stockId);
 
         if (type === "NEW") {
             currectStock = stockId;
-            newStockAdded();
+            sendSearchParams(stockId);
         }
     });
 
-    const newStockAdded = async () => {
+    async function sendSearchParams(stockId) {
+        try {
+            const response = await fetch("http://127.0.0.1:5000/searchParams", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ stockId }),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to send data to backend");
+            }
+            const responseData = await response.json();
+            console.log("Response from backend:", responseData);
+            newStockAdded(responseData["ticker"]);
+        } catch (error) {
+            console.error("Error in sending search params: ", error);
+        }
+    }
+
+    const newStockAdded = async (ticker) => {
         const addStockBtnExists =
             document.getElementsByClassName("add-stock-btn")[0];
         const isStock = document.getElementsByClassName("REySof")[0];
@@ -21,7 +42,7 @@
 
             addStockBtn.className = "add-stock-btn";
             addStockBtn.title = "Add stock to track it";
-            addStockBtn.innerHTML = "Add stock";
+            addStockBtn.innerHTML = `Add ${ticker}`;
 
             topLeftPanel = document.getElementsByClassName("gb_Ud")[0];
             topLeftPanel.appendChild(addStockBtn);
@@ -44,13 +65,9 @@
                 return response.json();
             })
             .then((data) => {
-                // Display stock data in extension popup
-                // const stockInfo = document.getElementById("stockInfo");
-                // stockInfo.innerHTML = `Current Price: $${data.currentPrice}`;
                 console.log(data.currentPrice);
             })
             .catch((error) => {
-                // Handle errors
                 console.error(
                     "There was a problem with the fetch operation:",
                     error
