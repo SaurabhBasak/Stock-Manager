@@ -8,7 +8,15 @@
 
         if (type === "NEW") {
             currectStock = stockId;
-            sendSearchParams(stockId);
+            sendSearchParams(stockId).then(async (ticker) => {
+                let tickerPrice = await fetchStockData(ticker);
+                console.log(tickerPrice);
+                chrome.runtime.sendMessage({
+                    action: "updatePopup",
+                    ticker: ticker,
+                    tickerPrice: tickerPrice,
+                });
+            });
         }
     });
 
@@ -27,6 +35,7 @@
             const responseData = await response.json();
             console.log("Response from backend:", responseData);
             newStockAdded(responseData["ticker"]);
+            return responseData["ticker"];
         } catch (error) {
             console.error("Error in sending search params: ", error);
         }
@@ -46,35 +55,26 @@
 
             topLeftPanel = document.getElementsByClassName("gb_Ud")[0];
             topLeftPanel.appendChild(addStockBtn);
-            // addStockBtn.addEventListener("click", addStockEventHandler);
         }
     };
 
     async function fetchStockData(ticker) {
-        fetch("http://127.0.0.1:5000/stock", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ ticker: ticker }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data.currentPrice);
-            })
-            .catch((error) => {
-                console.error(
-                    "There was a problem with the fetch operation:",
-                    error
-                );
+        try {
+            const response = await fetch("http://127.0.0.1:5000/stock", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ ticker: ticker }),
             });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            return data.currentPrice;
+        } catch (error) {
+            console.error("Error fetching stock data:", error);
+            throw error; // Rethrow the error to be caught in the caller
+        }
     }
-
-    // Call fetchStockData function when the content script is loaded
-    fetchStockData("AAPL");
 })();
