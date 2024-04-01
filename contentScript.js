@@ -88,12 +88,12 @@
 
         currentStocks = await fetchStocks();
 
-        console.log(newStock);
+        console.log(newStockDetails);
         console.log(currentStocks);
 
         if (!currentStocks.find((stock) => stock["ticker"] === newStockDetails["ticker"])){
             chrome.storage.sync.set({
-                [newStockDetails]: JSON.stringify([...currentStocks, newStockDetails]),
+                [newStock]: JSON.stringify([...currentStocks, newStockDetails]),
             });
         }
     };
