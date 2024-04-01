@@ -37,7 +37,7 @@ def findTicker(params):
 
 
 @app.route("/stock", methods=["POST"])
-def get_stock_data():
+def getStockData():
     ticker = request.get_json()["ticker"]
     data = yf.Ticker(ticker).history(period="1d")
     return jsonify({"currentPrice": data.iloc[-1].Close})

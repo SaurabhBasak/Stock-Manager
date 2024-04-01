@@ -1,22 +1,32 @@
 (() => {
     let topLeftPanel;
-    let currectStock = "";
+    let newStock = "";
+    let currentStocks = [];
+
+    const fetchStocks = async () => {
+        return new Promise((resolve) => {
+            chrome.storage.sync.get([newStock], (obj) => {
+                resolve(obj[newStock] ? JSON.parse(obj[newStock]) : []);
+            });
+        });
+    };
 
     chrome.runtime.onMessage.addListener((object, sender, response) => {
         const { type, value, stockId } = object;
         console.log(stockId);
 
         if (type === "NEW") {
-            currectStock = stockId;
-            sendSearchParams(stockId).then(async (ticker) => {
-                let tickerPrice = await fetchStockData(ticker);
-                console.log(tickerPrice);
-                chrome.runtime.sendMessage({
-                    action: "updatePopup",
-                    ticker: ticker,
-                    tickerPrice: tickerPrice,
-                });
-            });
+            newStock = stockId;
+            sendSearchParams(stockId);
+            // .then(async (ticker) => {
+            //     let tickerPrice = await fetchStockData(ticker);
+            //     console.log(tickerPrice);
+            //     chrome.runtime.sendMessage({
+            //         action: "updatePopup",
+            //         ticker: ticker,
+            //         tickerPrice: tickerPrice,
+            //     });
+            // });
         }
     });
 
@@ -46,6 +56,8 @@
             document.getElementsByClassName("add-stock-btn")[0];
         const isStock = document.getElementsByClassName("REySof")[0];
 
+        currentStocks = await fetchStocks();
+
         if (!addStockBtnExists && isStock) {
             const addStockBtn = document.createElement("button");
 
@@ -55,6 +67,34 @@
 
             topLeftPanel = document.getElementsByClassName("gb_Ud")[0];
             topLeftPanel.appendChild(addStockBtn);
+            addStockBtn.addEventListener("click", () =>
+                addStockEventHandler(ticker)
+            );
+        }
+    };
+
+    const addStockEventHandler = async (ticker) => {
+        let tickerPrice = await fetchStockData(ticker);
+        tickerPrice = tickerPrice.toFixed(2);
+        // chrome.runtime.sendMessage({
+        //     action: "addStock",
+        //     ticker: ticker,
+        //     tickerPrice: tickerPrice,
+        // });
+        const newStockDetails = {
+            ticker,
+            tickerPrice,
+        };
+
+        currentStocks = await fetchStocks();
+
+        console.log(newStock);
+        console.log(currentStocks);
+
+        if (!currentStocks.find((stock) => stock["ticker"] === newStockDetails["ticker"])){
+            chrome.storage.sync.set({
+                [newStockDetails]: JSON.stringify([...currentStocks, newStockDetails]),
+            });
         }
     };
 
