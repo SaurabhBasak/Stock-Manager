@@ -1,2 +1,6 @@
 venv/
+env/
+.python-version
 .env
+__pycache__
+sendgrid.env
