@@ -1,9 +1,7 @@
 import yfinance as yf
-import requests
 import json
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-from dotenv import load_dotenv
 import os
 import smtplib
 from dotenv import load_dotenv
@@ -11,8 +9,9 @@ import requests
 
 load_dotenv()
 
-api_key = os.getenv("SERP_API_KEY")
-print(api_key)
+EMAIL_ADDRESS = os.getenv('Email_addy')
+EMAIL_PASSWORD = os.getenv('Email_pass')
+SEARCH_API_KEY = os.getenv("SERP_API_KEY")
 
 
 app = Flask(__name__)
@@ -23,7 +22,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 @app.route("/searchParams", methods=["POST"])
 def getSearchParams():
     data = request.get_json()
-    params = {"api_key": api_key, "q": data["stockId"]}
+    params = {"api_key": SEARCH_API_KEY, "q": data["parameters"]}
     return findTicker(params)
 
 
@@ -45,18 +44,6 @@ def getStockData():
     data = yf.Ticker(ticker).history(period="1d")
     return jsonify({"currentPrice": data.iloc[-1].Close})
 
-
-
-
-load_dotenv()
-app = Flask(__name__)
-
-EMAIL_ADDRESS = os.getenv('Email_addy')
-EMAIL_PASSWORD = os.getenv('Email_pass')
-
-@app.route('/')
-def home():
-    return 'Welcome to My Flask Application!'
 
 @app.route('/send-email', methods=['POST'])
 def send_email():
