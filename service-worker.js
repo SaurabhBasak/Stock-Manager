@@ -1,6 +1,5 @@
 let newTicker = "";
-let currentStocks = [];
-
+let currentStocks = {};
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     if (changeInfo.status === "complete") {
@@ -9,7 +8,6 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
                 const queryParameters = tab.url.split("?")[1];
                 const urlParameters = new URLSearchParams(queryParameters);
 
-                // console.log(urlParameters.get("q"));
                 const parameters = urlParameters.get("q");
                 const ticker = await sendSearchParams(parameters, tabId);
 
@@ -22,15 +20,15 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     }
 });
 
-
 const fetchStocks = async () => {
     return new Promise((resolve) => {
-        chrome.storage.sync.get([newTicker], (obj) => {
-            resolve(obj[newTicker] ? JSON.parse(obj[newTicker]) : []);
+        chrome.storage.sync.get(["currentStocks"], (obj) => {
+            resolve(
+                obj["currentStocks"] ? JSON.parse(obj["currentStocks"]) : {}
+            );
         });
     });
 };
-
 
 async function sendSearchParams(parameters, tabId) {
     try {
@@ -52,7 +50,6 @@ async function sendSearchParams(parameters, tabId) {
     }
 }
 
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const { action, ticker } = request;
     if (action === "addStock") {
@@ -64,8 +61,10 @@ const addStockEventHandler = async (ticker) => {
     let tickerPrice = await fetchStockData(ticker);
     tickerPrice = tickerPrice.toFixed(2);
     const newStockDetails = {
-        ticker,
-        tickerPrice,
+        price: tickerPrice,
+        low: 0,
+        high: 0,
+        notified: false,
     };
 
     currentStocks = await fetchStocks();
@@ -73,13 +72,13 @@ const addStockEventHandler = async (ticker) => {
     console.log(newStockDetails);
     console.log(currentStocks);
 
-    if (!currentStocks.find((stock) => stock["ticker"] === newStockDetails["ticker"])){
+    if (!currentStocks[ticker]) {
+        currentStocks[ticker] = newStockDetails;
         chrome.storage.sync.set({
-            [newTicker]: JSON.stringify([...currentStocks, newStockDetails]),
+            currentStocks: JSON.stringify(currentStocks),
         });
     }
 };
-
 
 async function fetchStockData(ticker) {
     try {
