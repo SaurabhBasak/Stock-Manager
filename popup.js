@@ -3,6 +3,7 @@ function updateView() {
         const currentStocks = obj["currentStocks"] ? JSON.parse(obj["currentStocks"]) : {};
         // console.log("Popup", currentStocks);
         // const currentStocks = {};
+
         const stockList = document.getElementById("stock-list");
         for (const ticker in currentStocks) {
             const stockItem = document.createElement("div");
@@ -20,11 +21,23 @@ function updateView() {
             startRange.placeholder = "Low";
             startRange.value = currentStocks[ticker].low;
 
+            startRange.addEventListener("input", (event) => {
+                const newValue = event.target.value;
+                currentStocks[ticker].low = newValue;
+                chrome.storage.sync.set({ currentStocks: JSON.stringify(currentStocks) });
+            });
+
             const endLabel = document.createElement("label");
             endLabel.innerHTML = "High";
             const endRange = document.createElement("input");
             endRange.placeholder = "High";
             endRange.value = currentStocks[ticker].high;
+
+            endRange.addEventListener("input", (event) => {
+                const newValue = event.target.value;
+                currentStocks[ticker].high = newValue;
+                chrome.storage.sync.set({ currentStocks: JSON.stringify(currentStocks) });
+            });
 
             stockPriceRange.appendChild(startLabel);
             stockPriceRange.appendChild(startRange);
@@ -37,7 +50,8 @@ function updateView() {
             stockList.appendChild(stockItem);
         }
     });
-
 }
 
-document.addEventListener("DOMContentLoaded", updateView);
+document.addEventListener("DOMContentLoaded", () => {
+    updateView();
+});
