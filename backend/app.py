@@ -23,7 +23,8 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def getSearchParams():
     data = request.get_json()
     params = {"api_key": SEARCH_API_KEY, "q": data["parameters"]}
-    return findTicker(params)
+    ticker = findTicker(params)
+    return ticker
 
 
 def findTicker(params):
@@ -35,7 +36,7 @@ def findTicker(params):
     #         ticker = res["displayed_link"].split(" › ")[-1]
     #         break
     # return jsonify({"ticker": ticker})
-    return jsonify({"ticker": "AAPL"})
+    return jsonify({"ticker": "MSFT"})
 
 
 @app.route("/stock", methods=["POST"])

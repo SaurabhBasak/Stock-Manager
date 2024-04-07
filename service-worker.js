@@ -62,21 +62,22 @@ const addStockEventHandler = async (ticker) => {
     tickerPrice = tickerPrice.toFixed(2);
     const newStockDetails = {
         price: tickerPrice,
-        low: 0,
-        high: 0,
+        low: tickerPrice - 10,
+        high: tickerPrice + 10,
         notified: false,
     };
 
     currentStocks = await fetchStocks();
 
     console.log(newStockDetails);
-    console.log(currentStocks);
 
     if (!currentStocks[ticker]) {
         currentStocks[ticker] = newStockDetails;
         chrome.storage.sync.set({
             currentStocks: JSON.stringify(currentStocks),
         });
+
+        console.log("Current stocks:", currentStocks);
     }
 };
 
