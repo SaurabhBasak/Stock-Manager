@@ -48,13 +48,12 @@ function updateView() {
             const deleteStock = document.createElement("button");
             deleteStock.innerHTML = "Delete";
             deleteStock.style.color = "red";
+            stockItem.appendChild(deleteStock);
             deleteStock.addEventListener("click", () => {
-                deleteStock.innerHTML = "Deleted";
-                deleteStock.style.color = "green";
+                stockItem.style.display = "none";
                 delete currentStocks[ticker];
                 chrome.storage.sync.set({ currentStocks: JSON.stringify(currentStocks) });
             });
-            stockItem.appendChild(deleteStock);
             
             stockItem.appendChild(document.createElement("br"));
             stockItem.appendChild(document.createElement("hr"));
