@@ -44,7 +44,7 @@
             addStockBtn.innerHTML = `Add ${ticker}`;
 
             topLeftPanel =
-                document.getElementsByClassName("gb_a gb_i gb_ld")[0];
+                document.getElementsByClassName("gb_a gb_i gb_md")[0];
 
             const buttonDiv = topLeftPanel.appendChild(
                 document.createElement("div")
