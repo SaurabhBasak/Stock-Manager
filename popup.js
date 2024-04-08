@@ -44,6 +44,15 @@ function updateView() {
             stockPriceRange.appendChild(endLabel);
             stockPriceRange.appendChild(endRange);
             stockItem.appendChild(stockPriceRange);
+
+            const deleteStock = document.createElement("button");
+            deleteStock.innerHTML = "Delete";
+            deleteStock.style.color = "red";
+            deleteStock.addEventListener("click", () => {
+                delete currentStocks[ticker];
+                chrome.storage.sync.set({ currentStocks: JSON.stringify(currentStocks) });
+            });
+            stockItem.appendChild(deleteStock);
             
             stockItem.appendChild(document.createElement("br"));
             stockItem.appendChild(document.createElement("hr"));
