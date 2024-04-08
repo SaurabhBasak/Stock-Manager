@@ -20,6 +20,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     }
 });
 
+
 const fetchStocks = async () => {
     return new Promise((resolve) => {
         chrome.storage.sync.get(["currentStocks"], (obj) => {
@@ -29,6 +30,7 @@ const fetchStocks = async () => {
         });
     });
 };
+
 
 async function sendSearchParams(parameters) {
     try {
@@ -50,12 +52,14 @@ async function sendSearchParams(parameters) {
     }
 }
 
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const { action, ticker } = request;
     if (action === "addStock") {
         addStockEventHandler(ticker);
     }
 });
+
 
 const addStockEventHandler = async (ticker) => {
     let tickerPrice = await fetchStockData(ticker);
@@ -78,6 +82,55 @@ const addStockEventHandler = async (ticker) => {
         });
     }
 };
+
+
+setInterval(async () => {
+    const currentStocks = await fetchStocks();
+
+    if (Object.keys(currentStocks).length > 0) {
+        const tickersString = Object.keys(currentStocks).join(" ");
+        let allPrices = await fetchMassStockData(tickersString); 
+        console.log(allPrices);
+        for (let ticker in currentStocks) {
+            currentStocks[ticker].price = allPrices[ticker].toFixed(2);
+            
+            if ( currentStocks[ticker].price <  currentStocks[ticker].low) {
+                console.log(
+                    `Price of ${ticker} is below the low price. Current price: ${currentPrice}, Low price: ${low}`
+                );
+            } else if ( currentStocks[ticker].price >  currentStocks[ticker].high) {
+                console.log(
+                    `Price of ${ticker} is above the high price. Current price: ${currentPrice}, High price: ${high}`
+                );
+            }
+        }
+
+        chrome.storage.sync.set({
+            currentStocks: JSON.stringify(currentStocks),
+        });
+    }
+}, 60000);
+
+async function fetchMassStockData(tickers) {
+    try {
+        const response = await fetch("http://127.0.0.1:5000/massStock", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tickers: tickers }),
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const prices = await response.json();
+        return prices;
+    } catch (error) {
+        console.error("Error fetching stock data:", error);
+        throw error;
+    }
+}
+
 
 async function fetchStockData(ticker) {
     try {

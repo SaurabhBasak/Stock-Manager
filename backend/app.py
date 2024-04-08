@@ -9,8 +9,8 @@ import requests
 
 load_dotenv()
 
-EMAIL_ADDRESS = os.getenv('Email_addy')
-EMAIL_PASSWORD = os.getenv('Email_pass')
+EMAIL_ADDRESS = os.getenv("Email_addy")
+EMAIL_PASSWORD = os.getenv("Email_pass")
 SEARCH_API_KEY = os.getenv("SERP_API_KEY")
 
 
@@ -36,7 +36,7 @@ def findTicker(params):
     #         ticker = res["displayed_link"].split(" › ")[-1]
     #         break
     # return jsonify({"ticker": ticker})
-    return jsonify({"ticker": "MSFT"})
+    return jsonify({"ticker": "TSLA"})
 
 
 @app.route("/stock", methods=["POST"])
@@ -46,11 +46,21 @@ def getStockData():
     return jsonify({"currentPrice": data.iloc[-1].Close})
 
 
-@app.route('/send-email', methods=['POST'])
+@app.route("/massStock", methods=["POST"])
+def getMassStockData():
+    tickers = request.get_json()["tickers"].split()
+    prices = {}
+    for ticker in tickers:
+        data = yf.Ticker(ticker).history(period="1d")
+        prices[ticker] = data.iloc[-1].Close
+    return jsonify(prices)
+
+
+@app.route("/send-email", methods=["POST"])
 def send_email():
     data = request.json
-    stock_symbol = data['symbol']
-    target_price = data['targetPrice']
+    stock_symbol = data["symbol"]
+    target_price = data["targetPrice"]
     current_price = get_stock_price(stock_symbol)
 
     if current_price <= target_price:
@@ -59,27 +69,29 @@ def send_email():
     else:
         return jsonify({"message": "Stock price has not hit the target."}), 200
 
+
 def get_stock_price(symbol):
     # Placeholder for your logic to fetch the stock price
     return 150
 
+
 def send_stock_alert(symbol, price):
     print("Attempting to send email...")
     try:
-        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
             smtp.ehlo()
             smtp.starttls()
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            
+
             subject = f"Stock Alert for {symbol}"
             body = f"The stock price for {symbol} has reached {price}."
-            msg = f'Subject: {subject}\n\n{body}'
-            smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg)  # Sending email to yourself for testing
+            msg = f"Subject: {subject}\n\n{body}"
+            smtp.sendmail(
+                EMAIL_ADDRESS, EMAIL_ADDRESS, msg
+            )  # Sending email to yourself for testing
             print("Email sent successfully!")
     except Exception as e:
         print(f"An error occurred: {e}")
-
-
 
 
 if __name__ == "__main__":
