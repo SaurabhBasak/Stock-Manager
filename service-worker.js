@@ -96,11 +96,11 @@ setInterval(async () => {
             
             if ( currentStocks[ticker].price <  currentStocks[ticker].low) {
                 console.log(
-                    `Price of ${ticker} is below the low price. Current price: ${currentPrice}, Low price: ${low}`
+                    `Price of ${ticker} is below the low price. Current price: ${currentStocks[ticker].price}, Low price: ${currentStocks[ticker].low}`
                 );
             } else if ( currentStocks[ticker].price >  currentStocks[ticker].high) {
                 console.log(
-                    `Price of ${ticker} is above the high price. Current price: ${currentPrice}, High price: ${high}`
+                    `Price of ${ticker} is above the high price. Current price: ${currentStocks[ticker].price}, High price: ${currentStocks[ticker].high}`
                 );
             }
         }
