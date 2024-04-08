@@ -1,8 +1,8 @@
 function updateView() {
     chrome.storage.sync.get(["currentStocks"], (obj) => {
-        const currentStocks = obj["currentStocks"] ? JSON.parse(obj["currentStocks"]) : {};
-        // console.log("Popup", currentStocks);
-        // const currentStocks = {};
+        const currentStocks = obj["currentStocks"]
+            ? JSON.parse(obj["currentStocks"])
+            : {};
 
         const stockList = document.getElementById("stock-list");
         for (const ticker in currentStocks) {
@@ -24,7 +24,9 @@ function updateView() {
             startRange.addEventListener("input", (event) => {
                 const newValue = event.target.value;
                 currentStocks[ticker].low = newValue;
-                chrome.storage.sync.set({ currentStocks: JSON.stringify(currentStocks) });
+                chrome.storage.sync.set({
+                    currentStocks: JSON.stringify(currentStocks),
+                });
             });
 
             const endLabel = document.createElement("label");
@@ -36,7 +38,9 @@ function updateView() {
             endRange.addEventListener("input", (event) => {
                 const newValue = event.target.value;
                 currentStocks[ticker].high = newValue;
-                chrome.storage.sync.set({ currentStocks: JSON.stringify(currentStocks) });
+                chrome.storage.sync.set({
+                    currentStocks: JSON.stringify(currentStocks),
+                });
             });
 
             stockPriceRange.appendChild(startLabel);
@@ -49,12 +53,24 @@ function updateView() {
             deleteStock.innerHTML = "Delete";
             deleteStock.style.color = "red";
             stockItem.appendChild(deleteStock);
+
             deleteStock.addEventListener("click", () => {
-                stockItem.style.display = "none";
+                stockItem.remove();
                 delete currentStocks[ticker];
-                chrome.storage.sync.set({ currentStocks: JSON.stringify(currentStocks) });
+                chrome.storage.sync.set({
+                    currentStocks: JSON.stringify(currentStocks),
+                });
+                chrome.tabs.query(
+                    { active: true, currentWindow: true },
+                    (tabs) => {
+                        chrome.tabs.sendMessage(tabs[0].id, {
+                            type: "RENEW",
+                            ticker,
+                        });
+                    }
+                );
             });
-            
+
             stockItem.appendChild(document.createElement("br"));
             stockItem.appendChild(document.createElement("hr"));
             stockList.appendChild(stockItem);

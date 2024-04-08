@@ -9,7 +9,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
                 const urlParameters = new URLSearchParams(queryParameters);
 
                 const parameters = urlParameters.get("q");
-                const ticker = await sendSearchParams(parameters, tabId);
+                const ticker = await sendSearchParams(parameters);
 
                 chrome.tabs.sendMessage(tabId, {
                     type: "NEW",
@@ -30,7 +30,7 @@ const fetchStocks = async () => {
     });
 };
 
-async function sendSearchParams(parameters, tabId) {
+async function sendSearchParams(parameters) {
     try {
         const response = await fetch("http://127.0.0.1:5000/searchParams", {
             method: "POST",
@@ -76,8 +76,6 @@ const addStockEventHandler = async (ticker) => {
         chrome.storage.sync.set({
             currentStocks: JSON.stringify(currentStocks),
         });
-
-        console.log("Current stocks:", currentStocks);
     }
 };
 
