@@ -49,6 +49,8 @@ function updateView() {
             deleteStock.innerHTML = "Delete";
             deleteStock.style.color = "red";
             deleteStock.addEventListener("click", () => {
+                deleteStock.innerHTML = "Deleted";
+                deleteStock.style.color = "green";
                 delete currentStocks[ticker];
                 chrome.storage.sync.set({ currentStocks: JSON.stringify(currentStocks) });
             });
