@@ -17,7 +17,7 @@ function updateView() {
             if (index === 1) {            
                 const priceRangeExplain = document.createElement("div");
                 priceRangeExplain.style.position = "relative";
-                priceRangeExplain.style.left = "30vw";
+                priceRangeExplain.style.left = "22vw";
                 priceRangeExplain.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
 
                 const priceRangeExplainText = document.createElement("p");
@@ -37,7 +37,7 @@ function updateView() {
                 const priceRangeExplainHover = document.createElement("div");
                 priceRangeExplainHover.style.position = "absolute";
                 priceRangeExplainHover.style.top = "150%";
-                priceRangeExplainHover.style.right = "37vw";
+                priceRangeExplainHover.style.right = "28vw";
                 priceRangeExplainHover.style.width = "70vw";
                 priceRangeExplainHover.style.padding = "10px";
                 priceRangeExplainHover.style.backgroundColor = "white";
@@ -46,6 +46,7 @@ function updateView() {
                 priceRangeExplainHover.style.borderRadius = "4px";
                 priceRangeExplainHover.style.opacity = "0";
                 priceRangeExplainHover.style.transition = "opacity 0.5s";
+                priceRangeExplainHover.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
 
                 const priceRangeExplainHoverText = document.createElement("p");
                 priceRangeExplainHoverText.innerHTML = "Once you set your preferred price range, we will notify you when the stock price falls out of the range.";
@@ -85,6 +86,7 @@ function updateView() {
             const startRange = document.createElement("input");
             startRange.type = "number";
             startRange.placeholder = "Lower bound";
+            startRange.style.border = "1px solid black";
             startRange.value = currentStocks[ticker].low;
 
             lowPriceDiv.appendChild(startLabel);
@@ -108,6 +110,7 @@ function updateView() {
             const endRange = document.createElement("input");
             endRange.type = "number"
             endRange.placeholder = "Upper bound";
+            endRange.style.border = "1px solid black";
             endRange.value = currentStocks[ticker].high;
 
             highPriceDiv.appendChild(endLabel);
@@ -149,10 +152,10 @@ function updateView() {
                 );
             });
 
-            stockPriceRange.style.marginTop = "-15px";
+            stockPriceRange.style.marginTop = "-21px";
             stockTicker.style.textAlign = "center";
             stockPriceRange.style.display = "flex";
-            stockPriceRange.style.gap = "20px";
+            stockPriceRange.style.gap = "30px";
             startLabel.style.position = "relative";
             startLabel.style.top = "21px";
             startLabel.style.right = "7px";
@@ -160,7 +163,7 @@ function updateView() {
             startLabel.style.fontWeight = "900";
             
             startRange.style.position = "relative";
-            startRange.style.width = "100px";
+            startRange.style.width = "80px";
             startRange.style.left = "4px";
             startRange.style.borderRadius = "3px";
 
@@ -170,13 +173,13 @@ function updateView() {
             endLabel.style.color = "green";
             endLabel.style.fontWeight = "900";
             endRange.style.position = "relative";
-            endRange.style.width = "100px";
+            endRange.style.width = "80px";
             endRange.style.borderRadius = "5px";
 
             
             deleteStock.style.marginTop = "10px";
             deleteStock.style.position = "relative";
-            deleteStock.style.left = "35vw";
+            deleteStock.style.left = "32vw";
             deleteStock.style.fontWeight = "bold";
 
             stockItem.appendChild(document.createElement("br"));
