@@ -39,6 +39,7 @@
             
             const addStockBtn = document.createElement("button");
 
+            addStockBtn.style.cursor = "pointer";
             addStockBtn.className = "add-stock-btn";
             addStockBtn.title = "Add stock to track it";
             addStockBtn.innerHTML = `Add ${ticker}`;

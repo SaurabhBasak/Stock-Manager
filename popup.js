@@ -25,14 +25,15 @@ function updateView() {
             startLabel.style.fontSize = "20px";
             startLabel.style.lineHeight = "2px";
             const startRange = document.createElement("input");
-            startRange.placeholder = "Enter Lower Price";
+            startRange.type = "number";
+            startRange.placeholder = "Lower bound";
             startRange.value = currentStocks[ticker].low;
 
             lowPriceDiv.appendChild(startLabel);
             lowPriceDiv.appendChild(startRange);
 
             startRange.addEventListener("input", (event) => {
-                const newValue = event.target.value;
+                const newValue = parseFloat(event.target.value).toFixed(2);
                 currentStocks[ticker].low = newValue;
                 chrome.storage.sync.set({
                     currentStocks: JSON.stringify(currentStocks),
@@ -47,15 +48,17 @@ function updateView() {
             endLabel.style.lineHeight = "2px";
 
             const endRange = document.createElement("input");
-            endRange.placeholder = `${currentStocks[ticker].high}`;
+            endRange.type = "number"
+            endRange.placeholder = "Upper bound";
             endRange.value = currentStocks[ticker].high;
 
             highPriceDiv.appendChild(endLabel);
             highPriceDiv.appendChild(endRange);
 
             endRange.addEventListener("input", (event) => {
-                const newValue = event.target.value;
+                const newValue = parseFloat(event.target.value).toFixed(2);
                 currentStocks[ticker].high = newValue;
+                endRange.value = newValue;
                 chrome.storage.sync.set({
                     currentStocks: JSON.stringify(currentStocks),
                 });
@@ -68,6 +71,7 @@ function updateView() {
             const deleteStock = document.createElement("button");
             deleteStock.innerHTML = "Delete";
             deleteStock.style.color = "red";
+            deleteStock.style.cursor = "pointer";
             stockItem.appendChild(deleteStock);
 
             deleteStock.addEventListener("click", () => {
