@@ -67,7 +67,7 @@ const addStockEventHandler = async (ticker) => {
     const newStockDetails = {
         price: tickerPrice,
         low: tickerPrice - 10,
-        high: tickerPrice + 10,
+        high: tickerPrice,
         notified: false,
     };
 

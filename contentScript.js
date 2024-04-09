@@ -42,6 +42,14 @@
             addStockBtn.className = "add-stock-btn";
             addStockBtn.title = "Add stock to track it";
             addStockBtn.innerHTML = `Add ${ticker}`;
+            addStockBtn.style.position = "relative";
+            addStockBtn.style.marginTop = "6px";
+            addStockBtn.style.height = "36px";
+            addStockBtn.style.width = "100px";
+            addStockBtn.style.borderRadius = "75px";
+            addStockBtn.style.backgroundColor = "#58027a";
+            addStockBtn.style.fontWeight = "500";
+            addStockBtn.style.border = "none";
 
             topLeftPanel =
                 document.getElementsByClassName("gb_a gb_i gb_md")[0];

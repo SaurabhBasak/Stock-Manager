@@ -15,11 +15,21 @@ function updateView() {
             const stockPriceRange = document.createElement("div");
 
             stockPriceRange.className = `${ticker}-price-range`;
+
+            const lowPriceDiv = document.createElement("div");
+
             const startLabel = document.createElement("label");
-            startLabel.innerHTML = "Low";
+            const lowSvg = document.createElement("svg");
+
+            startLabel.innerHTML = "↓";
+            startLabel.style.fontSize = "20px";
+            startLabel.style.lineHeight = "2px";
             const startRange = document.createElement("input");
-            startRange.placeholder = "Low";
+            startRange.placeholder = "Enter Lower Price";
             startRange.value = currentStocks[ticker].low;
+
+            lowPriceDiv.appendChild(startLabel);
+            lowPriceDiv.appendChild(startRange);
 
             startRange.addEventListener("input", (event) => {
                 const newValue = event.target.value;
@@ -29,11 +39,19 @@ function updateView() {
                 });
             });
 
+            const highPriceDiv= document.createElement("div");
+
             const endLabel = document.createElement("label");
-            endLabel.innerHTML = "High";
+            endLabel.innerHTML = "↑";
+            endLabel.style.fontSize = "20px";
+            endLabel.style.lineHeight = "2px";
+
             const endRange = document.createElement("input");
-            endRange.placeholder = "High";
+            endRange.placeholder = `${currentStocks[ticker].high}`;
             endRange.value = currentStocks[ticker].high;
+
+            highPriceDiv.appendChild(endLabel);
+            highPriceDiv.appendChild(endRange);
 
             endRange.addEventListener("input", (event) => {
                 const newValue = event.target.value;
@@ -43,10 +61,8 @@ function updateView() {
                 });
             });
 
-            stockPriceRange.appendChild(startLabel);
-            stockPriceRange.appendChild(startRange);
-            stockPriceRange.appendChild(endLabel);
-            stockPriceRange.appendChild(endRange);
+            stockPriceRange.appendChild(lowPriceDiv);
+            stockPriceRange.appendChild(highPriceDiv);
             stockItem.appendChild(stockPriceRange);
 
             const deleteStock = document.createElement("button");
@@ -70,6 +86,36 @@ function updateView() {
                     }
                 );
             });
+
+            stockPriceRange.style.marginTop = "-15px";
+            stockTicker.style.textAlign = "center";
+            stockPriceRange.style.display = "flex";
+            stockPriceRange.style.gap = "20px";
+            startLabel.style.position = "relative";
+            startLabel.style.top = "21px";
+            startLabel.style.right = "7px";
+            startLabel.style.color = "red";
+            startLabel.style.fontWeight = "900";
+            
+            startRange.style.position = "relative";
+            startRange.style.width = "100px";
+            startRange.style.left = "4px";
+            startRange.style.borderRadius = "3px";
+
+            endLabel.style.position = "relative";
+            endLabel.style.top = "21px";
+            endLabel.style.right = "11px";
+            endLabel.style.color = "green";
+            endLabel.style.fontWeight = "900";
+            endRange.style.position = "relative";
+            endRange.style.width = "100px";
+            endRange.style.borderRadius = "5px";
+
+            
+            deleteStock.style.marginTop = "10px";
+            deleteStock.style.position = "relative";
+            deleteStock.style.left = "35vw";
+            deleteStock.style.fontWeight = "bold";
 
             stockItem.appendChild(document.createElement("br"));
             stockItem.appendChild(document.createElement("hr"));
