@@ -5,12 +5,69 @@ function updateView() {
             : {};
 
         const stockList = document.getElementById("stock-list");
+        let index = 0;
         for (const ticker in currentStocks) {
+            index++;
             const stockItem = document.createElement("div");
             stockItem.className = `${ticker}-stock`;
             const stockTicker = document.createElement("h3");
             stockItem.appendChild(stockTicker);
             stockTicker.innerHTML = `${ticker}: ${currentStocks[ticker].price}`;
+
+            if (index === 1) {            
+                const priceRangeExplain = document.createElement("div");
+                priceRangeExplain.style.position = "relative";
+                priceRangeExplain.style.left = "30vw";
+                priceRangeExplain.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
+
+                const priceRangeExplainText = document.createElement("p");
+                priceRangeExplainText.innerHTML = "Preferred range";
+                priceRangeExplainText.style.fontWeight = "500";
+
+                const priceRangeExplainInfo = document.createElement("span");
+                priceRangeExplainInfo.innerHTML = "ⓘ";
+                priceRangeExplainInfo.style.fontSize = "15px";
+                priceRangeExplainInfo.style.color = "#2ea4db";
+                priceRangeExplainInfo.style.position = "relative";
+                priceRangeExplainInfo.style.top = "1px";
+                priceRangeExplainInfo.style.left = "5px";
+                priceRangeExplainInfo.style.cursor = "pointer";
+                priceRangeExplainText.appendChild(priceRangeExplainInfo);
+
+                const priceRangeExplainHover = document.createElement("div");
+                priceRangeExplainHover.style.position = "absolute";
+                priceRangeExplainHover.style.top = "150%";
+                priceRangeExplainHover.style.right = "37vw";
+                priceRangeExplainHover.style.width = "70vw";
+                priceRangeExplainHover.style.padding = "10px";
+                priceRangeExplainHover.style.backgroundColor = "white";
+                priceRangeExplainHover.style.border = "1px solid black";
+                priceRangeExplainHover.style.display = "none";
+                priceRangeExplainHover.style.borderRadius = "4px";
+
+                const priceRangeExplainHoverText = document.createElement("p");
+                priceRangeExplainHoverText.innerHTML = "Once you set your preffered price range, we will notify you when the stock price falls out of the range.";
+                priceRangeExplainHoverText.style.color = "#333";
+                priceRangeExplainHoverText.style.fontFamily = "Arial, sans-serif";
+                priceRangeExplainHoverText.style.lineHeight = "1.5";
+
+                priceRangeExplainHover.appendChild(priceRangeExplainHoverText);
+                priceRangeExplain.appendChild(priceRangeExplainHover);
+
+                priceRangeExplainInfo.addEventListener("mouseover", () => {
+                    priceRangeExplainHover.style.display = "block";
+                    priceRangeExplainHover.style.zIndex = "100";
+                    priceRangeExplainInfo.style.color = "#026b9c";
+                });
+
+                priceRangeExplain.addEventListener("mouseout", () => {
+                    priceRangeExplainHover.style.display = "none";
+                    priceRangeExplainInfo.style.color = "#2ea4db";
+                });
+
+                priceRangeExplain.appendChild(priceRangeExplainText);
+                stockItem.appendChild(priceRangeExplain);
+            }
 
             const stockPriceRange = document.createElement("div");
 
