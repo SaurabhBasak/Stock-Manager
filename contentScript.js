@@ -45,11 +45,13 @@
             addStockBtn.style.position = "relative";
             addStockBtn.style.marginTop = "6px";
             addStockBtn.style.height = "36px";
-            addStockBtn.style.width = "100px";
-            addStockBtn.style.borderRadius = "75px";
-            addStockBtn.style.backgroundColor = "#58027a";
+            addStockBtn.style.width = "80px";
+            addStockBtn.style.borderRadius = "4px";
+            addStockBtn.style.backgroundColor = "#81c995";
             addStockBtn.style.fontWeight = "500";
+            addStockBtn.style.color = "#202124"
             addStockBtn.style.border = "none";
+            addStockBtn.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
 
             topLeftPanel =
                 document.getElementsByClassName("gb_a gb_i gb_md")[0];
