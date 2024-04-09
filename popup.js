@@ -27,7 +27,7 @@ function updateView() {
                 const priceRangeExplainInfo = document.createElement("span");
                 priceRangeExplainInfo.innerHTML = "ⓘ";
                 priceRangeExplainInfo.style.fontSize = "15px";
-                priceRangeExplainInfo.style.color = "#2ea4db";
+                priceRangeExplainInfo.style.color = "#026b9c";
                 priceRangeExplainInfo.style.position = "relative";
                 priceRangeExplainInfo.style.top = "1px";
                 priceRangeExplainInfo.style.left = "5px";
@@ -44,9 +44,11 @@ function updateView() {
                 priceRangeExplainHover.style.border = "1px solid black";
                 priceRangeExplainHover.style.display = "none";
                 priceRangeExplainHover.style.borderRadius = "4px";
+                priceRangeExplainHover.style.opacity = "0";
+                priceRangeExplainHover.style.transition = "opacity 0.5s";
 
                 const priceRangeExplainHoverText = document.createElement("p");
-                priceRangeExplainHoverText.innerHTML = "Once you set your preffered price range, we will notify you when the stock price falls out of the range.";
+                priceRangeExplainHoverText.innerHTML = "Once you set your preferred price range, we will notify you when the stock price falls out of the range.";
                 priceRangeExplainHoverText.style.color = "#333";
                 priceRangeExplainHoverText.style.fontFamily = "Arial, sans-serif";
                 priceRangeExplainHoverText.style.lineHeight = "1.5";
@@ -57,12 +59,11 @@ function updateView() {
                 priceRangeExplainInfo.addEventListener("mouseover", () => {
                     priceRangeExplainHover.style.display = "block";
                     priceRangeExplainHover.style.zIndex = "100";
-                    priceRangeExplainInfo.style.color = "#026b9c";
+                    priceRangeExplainHover.style.opacity = "1";
                 });
 
                 priceRangeExplain.addEventListener("mouseout", () => {
-                    priceRangeExplainHover.style.display = "none";
-                    priceRangeExplainInfo.style.color = "#2ea4db";
+                    priceRangeExplainHover.style.opacity = "0";
                 });
 
                 priceRangeExplain.appendChild(priceRangeExplainText);
