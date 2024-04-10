@@ -44,6 +44,7 @@ function updateView() {
                 priceRangeExplainHover.style.border = "1px solid black";
                 priceRangeExplainHover.style.display = "none";
                 priceRangeExplainHover.style.borderRadius = "4px";
+                priceRangeExplainHover.style.display = "none";
                 priceRangeExplainHover.style.opacity = "0";
                 priceRangeExplainHover.style.transition = "opacity 0.5s";
                 priceRangeExplainHover.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
@@ -64,6 +65,17 @@ function updateView() {
                 });
 
                 priceRangeExplain.addEventListener("mouseout", () => {
+                    priceRangeExplainHover.style.opacity = "0";
+                });
+
+                priceRangeExplainHover.addEventListener("mouseover", () => {
+                    priceRangeExplainHover.style.display = "block";
+                    priceRangeExplainHover.style.zIndex = "100";
+                    priceRangeExplainHover.style.opacity = "1";
+                });
+
+                priceRangeExplainHover.addEventListener("mouseout", () => {
+                    priceRangeExplainHover.style.display = "none";
                     priceRangeExplainHover.style.opacity = "0";
                 });
 
