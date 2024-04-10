@@ -36,18 +36,16 @@ function updateView() {
 
                 const priceRangeExplainHover = document.createElement("div");
                 priceRangeExplainHover.style.position = "absolute";
-                priceRangeExplainHover.style.top = "150%";
+                priceRangeExplainHover.style.top = "-115%";
                 priceRangeExplainHover.style.right = "28vw";
                 priceRangeExplainHover.style.width = "70vw";
-                priceRangeExplainHover.style.padding = "10px";
+                priceRangeExplainHover.style.padding = "0 10px";
                 priceRangeExplainHover.style.backgroundColor = "white";
                 priceRangeExplainHover.style.border = "1px solid black";
-                priceRangeExplainHover.style.display = "none";
                 priceRangeExplainHover.style.borderRadius = "4px";
                 priceRangeExplainHover.style.display = "none";
                 priceRangeExplainHover.style.opacity = "0";
-                priceRangeExplainHover.style.transition = "opacity 0.5s";
-                priceRangeExplainHover.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+                priceRangeExplainHover.style.zIndex = "100";
 
                 const priceRangeExplainHoverText = document.createElement("p");
                 priceRangeExplainHoverText.innerHTML = "Once you set your preferred price range, we will notify you when the stock price falls out of the range.";
@@ -60,23 +58,22 @@ function updateView() {
 
                 priceRangeExplainInfo.addEventListener("mouseover", () => {
                     priceRangeExplainHover.style.display = "block";
-                    priceRangeExplainHover.style.zIndex = "100";
                     priceRangeExplainHover.style.opacity = "1";
                 });
 
-                priceRangeExplain.addEventListener("mouseout", () => {
+                priceRangeExplainInfo.addEventListener("mouseout", () => {
                     priceRangeExplainHover.style.opacity = "0";
+                    priceRangeExplainHover.style.display = "none";
                 });
-
+                
                 priceRangeExplainHover.addEventListener("mouseover", () => {
                     priceRangeExplainHover.style.display = "block";
-                    priceRangeExplainHover.style.zIndex = "100";
                     priceRangeExplainHover.style.opacity = "1";
                 });
-
-                priceRangeExplainHover.addEventListener("mouseout", () => {
-                    priceRangeExplainHover.style.display = "none";
+                
+                priceRangeExplainHover.addEventListener("mouseout", async () => {
                     priceRangeExplainHover.style.opacity = "0";
+                    priceRangeExplainHover.style.display = "none";
                 });
 
                 priceRangeExplain.appendChild(priceRangeExplainText);
@@ -90,11 +87,11 @@ function updateView() {
             const lowPriceDiv = document.createElement("div");
 
             const startLabel = document.createElement("label");
-            const lowSvg = document.createElement("svg");
 
             startLabel.innerHTML = "↓";
             startLabel.style.fontSize = "20px";
             startLabel.style.lineHeight = "2px";
+
             const startRange = document.createElement("input");
             startRange.type = "number";
             startRange.placeholder = "Lower bound";
@@ -115,6 +112,7 @@ function updateView() {
             const highPriceDiv= document.createElement("div");
 
             const endLabel = document.createElement("label");
+
             endLabel.innerHTML = "↑";
             endLabel.style.fontSize = "20px";
             endLabel.style.lineHeight = "2px";
@@ -188,7 +186,6 @@ function updateView() {
             endRange.style.width = "80px";
             endRange.style.borderRadius = "5px";
 
-            
             deleteStock.style.marginTop = "10px";
             deleteStock.style.position = "relative";
             deleteStock.style.left = "32vw";
