@@ -46,6 +46,7 @@ function updateView() {
                 priceRangeExplainHover.style.display = "none";
                 priceRangeExplainHover.style.opacity = "0";
                 priceRangeExplainHover.style.zIndex = "100";
+                priceRangeExplainHover.style.boxShadow = "0 2px 10px 10px rgba(0, 0, 0, 0.3)";
 
                 const priceRangeExplainHoverText = document.createElement("p");
                 priceRangeExplainHoverText.innerHTML = "Once you set your preferred price range, we will notify you when the stock price falls out of the range.";
