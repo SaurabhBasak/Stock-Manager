@@ -19,24 +19,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
-@app.route("/searchParams", methods=["POST"])
-def getSearchParams():
-    data = request.get_json()
-    params = {"api_key": SEARCH_API_KEY, "q": data["parameters"]}
-    ticker = findTicker(params)
-    return ticker
 
-
-def findTicker(params):
-    # api_result = requests.get("https://api.scaleserp.com/search", params)
-    # jsonData = api_result.json()
-    # ticker = ""
-    # for res in jsonData["organic_results"]:
-    #     if res["domain"] == "finance.yahoo.com":
-    #         ticker = res["displayed_link"].split(" › ")[-1]
-    #         break
-    # return jsonify({"ticker": ticker})
-    return jsonify({"ticker": "TSLA"})
 
 
 @app.route("/stock", methods=["POST"])
@@ -56,23 +39,29 @@ def getMassStockData():
     return jsonify(prices)
 
 
-@app.route("/send-email", methods=["POST"])
-def send_email():
+@app.route("/check-and-send-email", methods=["POST"])
+def check_and_send_email():
     data = request.json
-    stock_symbol = data["symbol"]
-    target_price = data["targetPrice"]
-    current_price = get_stock_price(stock_symbol)
+    symbol = data.get('symbol')
+    target_low = data.get('targetLow')
+    target_high = data.get('targetHigh')
 
-    if current_price <= target_price:
-        send_stock_alert(stock_symbol, current_price)
+    # Fetch the current stock price
+    current_price = get_stock_price(symbol)
+
+    # Check if the current price is within the range
+    if target_low <= current_price <= target_high:
+        send_stock_alert(symbol, current_price)
         return jsonify({"message": "Email sent successfully!"}), 200
     else:
-        return jsonify({"message": "Stock price has not hit the target."}), 200
+        return jsonify({"message": "Stock price is not within the target range."}), 200
 
-
+#this gets the current stock price using the ticker 
 def get_stock_price(symbol):
-    # Placeholder for your logic to fetch the stock price
-    return 150
+    data = yf.Ticker(symbol).history(period="1d")
+    return data['Close'].iloc[-1]
+
+
 
 
 def send_stock_alert(symbol, price):
