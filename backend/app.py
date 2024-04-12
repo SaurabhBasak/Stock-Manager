@@ -70,21 +70,19 @@ def send_email():
         return jsonify({"message": "Stock price has not hit the target."}), 200
 
 
-def get_stock_price(symbol):
-    # Placeholder for your logic to fetch the stock price
-    return 150
-
-
-def send_stock_alert(symbol, price):
+@app.route("/check-and-send-email", methods=["POST"])
+def send_stock_alert():
     print("Attempting to send email...")
+    data = request.get_json()
+    print(data)
     try:
         with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
             smtp.ehlo()
             smtp.starttls()
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 
-            subject = f"Stock Alert for {symbol}"
-            body = f"The stock price for {symbol} has reached {price}."
+            subject = f"Stock Alert for {data["symbol"]}"
+            body = f"The stock price for {data["symbol"]} has reached {data["currentPrice"]}."
             msg = f"Subject: {subject}\n\n{body}"
             smtp.sendmail(
                 EMAIL_ADDRESS, EMAIL_ADDRESS, msg
