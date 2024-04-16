@@ -56,40 +56,27 @@ def getMassStockData():
     return jsonify(prices)
 
 
-@app.route("/send-email", methods=["POST"])
-def send_email():
-    data = request.json
-    stock_symbol = data["symbol"]
-    target_price = data["targetPrice"]
-    current_price = get_stock_price(stock_symbol)
-
-    if current_price <= target_price:
-        send_stock_alert(stock_symbol, current_price)
-        return jsonify({"message": "Email sent successfully!"}), 200
-    else:
-        return jsonify({"message": "Stock price has not hit the target."}), 200
-
-
 @app.route("/check-and-send-email", methods=["POST"])
 def send_stock_alert():
-    print("Attempting to send email...")
     data = request.get_json()
-    print(data)
     try:
         with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
             smtp.ehlo()
             smtp.starttls()
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 
-            subject = f"Stock Alert for {data["symbol"]}"
-            body = f"The stock price for {data["symbol"]} has reached {data["currentPrice"]}."
+            subject = f"Stockify - {data["symbol"]} out of range"
+            if data["currentPrice"] > data["targetHigh"]:
+                body = f"The stock price for {data["symbol"]} is {data["currentPrice"]}. It has exceeded upperbound {data["targetHigh"]}."
+            elif data["currentPrice"] < data["targetLow"]:
+                body = f"The stock price for {data["symbol"]} is {data["currentPrice"]}. It has fallen below lowerbound {data["targetLow"]}."
             msg = f"Subject: {subject}\n\n{body}"
             smtp.sendmail(
                 EMAIL_ADDRESS, EMAIL_ADDRESS, msg
             )  # Sending email to yourself for testing
-            print("Email sent successfully!")
+            return jsonify({"message": "Email sent successfully!"})
     except Exception as e:
-        print(f"An error occurred: {e}")
+        return jsonify({"message": "An error occurred"})
 
 
 if __name__ == "__main__":

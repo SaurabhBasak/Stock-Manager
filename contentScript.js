@@ -15,52 +15,57 @@
     });
 
     setInterval(async () => {
-        const currentStocks = await fetchStocks(); 
-    
+        if (chrome.runtime.lastError) {
+            console.log('Extension context invalidated.');
+            return;
+        }
+
+        currentStocks = await fetchStocks();
+
         if (Object.keys(currentStocks).length > 0) {
             const tickersString = Object.keys(currentStocks).join(" ");
-            let allPrices = await fetchMassStockData(tickersString); 
+            let allPrices = await fetchMassStockData(tickersString);
             console.log(allPrices);
-    
+
             for (let ticker in currentStocks) {
                 let currentPrice = parseFloat(allPrices[ticker]); // Ensure price is a number
                 currentStocks[ticker].price = currentPrice.toFixed(2);
-    
+
                 if (currentPrice < currentStocks[ticker].low || currentPrice > currentStocks[ticker].high) {
                     // Defining the email inside the loop, where it has access to the current ticker's data
                     let emailPayload = {
                         symbol: ticker,
-                        currentPrice: currentPrice,
+                        currentPrice: currentStocks[ticker].price,
                         targetLow: currentStocks[ticker].low,
-                        targetHigh: currentStocks[ticker].high
+                        targetHigh: currentStocks[ticker].high,
                     };
-    
+
                     // Calling  Flask endpoint to check the condition and send an email
-                    fetch('http://127.0.0.1:5000/check-and-send-email', {
-                        method: 'POST',
+                    fetch("http://127.0.0.1:5000/check-and-send-email", {
+                        method: "POST",
                         headers: {
-                            'Content-Type': 'application/json',
+                            "Content-Type": "application/json",
                         },
                         body: JSON.stringify(emailPayload),
                     })
-                    .then(response => response.json())
-                    .then(data => console.log(data.message))
-                    .catch(error => console.error('Error:', error));
-    
+                        .then((response) => response.json())
+                        .then((data) => console.log(data.message))
+                        .catch((error) => console.error("Error:", error));
+
                     // Log a message about the stock meeting the condition
-                    console.log(`Condition met for ${ticker}. Email payload sent.`);
+                    console.log(
+                        `Condition met for ${ticker}. Email payload sent.`
+                    );
                 }
             }
-    
+
             // Update Chrome storage outside the loop, after all conditions are checked
             chrome.storage.sync.set({
                 currentStocks: JSON.stringify(currentStocks),
             });
         }
     }, 60000); // This sets up the code to run every 60 seconds
-    
-    
-    
+
     async function fetchMassStockData(tickers) {
         try {
             const response = await fetch("http://127.0.0.1:5000/massStock", {
@@ -81,7 +86,7 @@
         }
     }
 
-    const fetchStocks = async () => {
+    async function fetchStocks() {
         return new Promise((resolve) => {
             chrome.storage.sync.get(["currentStocks"], (obj) => {
                 resolve(
@@ -89,15 +94,14 @@
                 );
             });
         });
-    };
-
+    }
 
     const newStockAdded = async (ticker) => {
         const addStockBtnExists =
             document.getElementsByClassName("add-stock-btn")[0];
         const isStock = document.getElementsByClassName("REySof")[0];
 
-        currentStocks = await fetchStocks();
+        const currentStocks = await fetchStocks();
 
         if (currentStocks[ticker] !== undefined) {
             return;

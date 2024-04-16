@@ -20,7 +20,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     }
 });
 
-const fetchStocks = async () => {
+async function fetchStocks() {
     return new Promise((resolve) => {
         chrome.storage.sync.get(["currentStocks"], (obj) => {
             resolve(
