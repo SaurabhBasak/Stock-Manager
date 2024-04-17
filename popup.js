@@ -37,7 +37,7 @@ function updateView() {
                 const priceRangeExplainHover = document.createElement("div");
                 priceRangeExplainHover.style.position = "absolute";
                 priceRangeExplainHover.style.top = "-115%";
-                priceRangeExplainHover.style.right = "24vw";
+                priceRangeExplainHover.style.right = "20vw";
                 priceRangeExplainHover.style.width = "70vw";
                 priceRangeExplainHover.style.padding = "0 10px";
                 priceRangeExplainHover.style.backgroundColor = "white";
@@ -161,8 +161,9 @@ function updateView() {
                 );
             });
 
-            stockPriceRange.style.marginTop = "-21px";
             stockTicker.style.textAlign = "center";
+            stockTicker.style.marginLeft = "25px";
+            stockPriceRange.style.marginTop = "-21px";
             stockPriceRange.style.display = "flex";
             stockPriceRange.style.gap = "30px";
             startLabel.style.position = "relative";
@@ -246,7 +247,11 @@ function updateView() {
 
 
             stockItem.appendChild(document.createElement("br"));
-            stockItem.appendChild(document.createElement("hr"));
+            const hr = document.createElement("hr");
+            hr.style.marginTop = "3vh";
+            hr.style.marginLeft = "7vw";
+            hr.style.marginBottom = "3vh";
+            stockItem.appendChild(hr);
             stockList.appendChild(stockItem);
         }
     });
