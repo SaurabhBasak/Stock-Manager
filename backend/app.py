@@ -36,7 +36,7 @@ def findTicker(params):
     #         ticker = res["displayed_link"].split(" › ")[-1]
     #         break
     # return jsonify({"ticker": ticker})
-    return jsonify({"ticker": "TSLA"})
+    return jsonify({"ticker": "AMZN"})
 
 
 @app.route("/stock", methods=["POST"])
@@ -67,9 +67,9 @@ def send_stock_alert():
 
             subject = f"Stockify - {data["symbol"]} out of range"
             if data["currentPrice"] > data["targetHigh"]:
-                body = f"The stock price for {data["symbol"]} is {data["currentPrice"]}. It has exceeded upperbound {data["targetHigh"]}."
+                body = f"The stock price for {data["symbol"]} is {data["currentPrice"]}. It has exceeded your upperbound of {data["targetHigh"]}."
             elif data["currentPrice"] < data["targetLow"]:
-                body = f"The stock price for {data["symbol"]} is {data["currentPrice"]}. It has fallen below lowerbound {data["targetLow"]}."
+                body = f"The stock price for {data["symbol"]} is {data["currentPrice"]}. It has fallen below your lowerbound of {data["targetLow"]}."
             msg = f"Subject: {subject}\n\n{body}"
             smtp.sendmail(
                 EMAIL_ADDRESS, EMAIL_ADDRESS, msg

@@ -85,11 +85,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 const addStockEventHandler = async (ticker) => {
     let tickerPrice = await fetchStockData(ticker);
-    tickerPrice = tickerPrice.toFixed(2);
+    tickerPrice = parseFloat(tickerPrice);
+    const roundedPrice = tickerPrice.toFixed(2); // Convert to string representation
+    const low = parseFloat(roundedPrice) - 10; // Perform arithmetic operation first
+    const high = parseFloat(roundedPrice) + 10;
     const newStockDetails = {
-        price: tickerPrice,
-        low: tickerPrice - 10,
-        high: tickerPrice,
+        price: roundedPrice,
+        low: low,
+        high: high,
         notified: false,
     };
 
