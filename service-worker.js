@@ -30,6 +30,32 @@ async function fetchStocks() {
     });
 };
 
+async function updateStocks(data) {
+    await new Promise((resolve, reject) => {
+        chrome.storage.sync.set({ currentStocks: JSON.stringify(data) }, () => {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+setInterval(async () => {
+    currentStocks = await fetchStocks();
+    console.log(currentStocks);
+    for (let ticker in currentStocks) {
+        currentStocks[ticker].notified = false;
+        console.log("Changed", ticker, currentStocks[ticker].notified);
+    }
+    await updateStocks(currentStocks);
+    currentStocks = {};
+    console.log(currentStocks);
+    currentStocks = await fetchStocks();
+    console.log(currentStocks);
+}, 30000);
+
 async function sendSearchParams(parameters) {
     try {
         const response = await fetch("http://127.0.0.1:5000/searchParams", {
@@ -67,7 +93,7 @@ const addStockEventHandler = async (ticker) => {
         notified: false,
     };
 
-    currentStocks = await fetchStocks();
+    const currentStocks = await fetchStocks();
 
     console.log(newStockDetails);
 

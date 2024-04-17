@@ -105,6 +105,7 @@ function updateView() {
             startRange.addEventListener("input", (event) => {
                 const newValue = parseFloat(event.target.value).toFixed(2);
                 currentStocks[ticker].low = newValue;
+                currentStocks[ticker].notified = false;
                 chrome.storage.sync.set({
                     currentStocks: JSON.stringify(currentStocks),
                 });
@@ -130,7 +131,7 @@ function updateView() {
             endRange.addEventListener("input", (event) => {
                 const newValue = parseFloat(event.target.value).toFixed(2);
                 currentStocks[ticker].high = newValue;
-                endRange.value = newValue;
+                currentStocks[ticker].notified = false;
                 chrome.storage.sync.set({
                     currentStocks: JSON.stringify(currentStocks),
                 });

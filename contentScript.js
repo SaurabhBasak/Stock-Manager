@@ -14,12 +14,29 @@
         }
     });
 
-    setInterval(async () => {
-        if (chrome.runtime.lastError) {
-            console.log('Extension context invalidated.');
-            return;
-        }
+    async function fetchStocks() {
+        return new Promise((resolve) => {
+            chrome.storage.sync.get(["currentStocks"], (obj) => {
+                resolve(
+                    obj["currentStocks"] ? JSON.parse(obj["currentStocks"]) : {}
+                );
+            });
+        });
+    }
 
+    async function updateStocks(data) {
+        await new Promise((resolve, reject) => {
+            chrome.storage.sync.set({ currentStocks: JSON.stringify(data) }, () => {
+                if (chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    setInterval(async () => {
         currentStocks = await fetchStocks();
 
         if (Object.keys(currentStocks).length > 0) {
@@ -28,11 +45,14 @@
             console.log(allPrices);
 
             for (let ticker in currentStocks) {
+                console.log(ticker, currentStocks[ticker]);
                 let currentPrice = parseFloat(allPrices[ticker]); // Ensure price is a number
                 currentStocks[ticker].price = currentPrice.toFixed(2);
 
-                if (currentPrice < currentStocks[ticker].low || currentPrice > currentStocks[ticker].high) {
+                if ((currentPrice < currentStocks[ticker].low || currentPrice > currentStocks[ticker].high) && currentStocks[ticker].notified === false) {
                     // Defining the email inside the loop, where it has access to the current ticker's data
+                    currentStocks[ticker].notified = true;
+                    console.log("Notified", ticker, currentStocks[ticker].notified);
                     let emailPayload = {
                         symbol: ticker,
                         currentPrice: currentStocks[ticker].price,
@@ -59,12 +79,9 @@
                 }
             }
 
-            // Update Chrome storage outside the loop, after all conditions are checked
-            chrome.storage.sync.set({
-                currentStocks: JSON.stringify(currentStocks),
-            });
+            await updateStocks(currentStocks);
         }
-    }, 60000); // This sets up the code to run every 60 seconds
+    }, 10000); // This sets up the code to run every 60 seconds
 
     async function fetchMassStockData(tickers) {
         try {
@@ -86,22 +103,12 @@
         }
     }
 
-    async function fetchStocks() {
-        return new Promise((resolve) => {
-            chrome.storage.sync.get(["currentStocks"], (obj) => {
-                resolve(
-                    obj["currentStocks"] ? JSON.parse(obj["currentStocks"]) : {}
-                );
-            });
-        });
-    }
-
     const newStockAdded = async (ticker) => {
         const addStockBtnExists =
             document.getElementsByClassName("add-stock-btn")[0];
         const isStock = document.getElementsByClassName("REySof")[0];
 
-        const currentStocks = await fetchStocks();
+        currentStocks = await fetchStocks();
 
         if (currentStocks[ticker] !== undefined) {
             return;
