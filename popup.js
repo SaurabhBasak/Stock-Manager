@@ -90,13 +90,13 @@ function updateView() {
             const startLabel = document.createElement("label");
 
             startLabel.innerHTML = "↓";
-            startLabel.style.fontSize = "20px";
+            startLabel.style.fontSize = "30px";
             startLabel.style.lineHeight = "2px";
 
             const startRange = document.createElement("input");
             startRange.type = "number";
             startRange.placeholder = "Lower bound";
-            startRange.style.border = "1px solid black";
+            startRange.style.border = "1px solid #7d7c7c";
             startRange.value = currentStocks[ticker].low;
 
             lowPriceDiv.appendChild(startLabel);
@@ -116,13 +116,13 @@ function updateView() {
             const endLabel = document.createElement("label");
 
             endLabel.innerHTML = "↑";
-            endLabel.style.fontSize = "20px";
+            endLabel.style.fontSize = "30px";
             endLabel.style.lineHeight = "2px";
 
             const endRange = document.createElement("input");
             endRange.type = "number"
             endRange.placeholder = "Upper bound";
-            endRange.style.border = "1px solid black";
+            endRange.style.border = "1px solid #7d7c7c";
             endRange.value = currentStocks[ticker].high;
 
             highPriceDiv.appendChild(endLabel);
@@ -169,24 +169,61 @@ function updateView() {
             stockPriceRange.style.display = "flex";
             stockPriceRange.style.gap = "30px";
             startLabel.style.position = "relative";
-            startLabel.style.top = "21px";
+            startLabel.style.top = "31px";
             startLabel.style.right = "7px";
             startLabel.style.color = "red";
             startLabel.style.fontWeight = "900";
             
             startRange.style.position = "relative";
-            startRange.style.width = "80px";
-            startRange.style.left = "4px";
-            startRange.style.borderRadius = "3px";
+            startRange.style.width = "70px";
+            startRange.style.left = "10px";
+            startRange.style.padding = "8px";
+            startRange.style.borderRadius = "5px";
+            startRange.style.fontFamily = "Arial, sans-serif";
+            startRange.style.fontSize = "14px";
+            startRange.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
+            startRange.style.transition = "border-color 0.3s, box-shadow 0.3s";
+
+            startRange.addEventListener("mouseenter", () => {
+                startRange.style.borderColor = "#666"; // Darken border color on hover
+                startRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.3)"; // Add a slightly stronger box shadow on hover
+            });
+            
+            // Reset border color and box shadow on mouse leave
+            startRange.addEventListener("mouseleave", () => {
+                startRange.style.borderColor = "#7d7c7c"; // Reset border color on mouse leave
+                startRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)"; // Reset box shadow on mouse leave
+            });
+            
 
             endLabel.style.position = "relative";
-            endLabel.style.top = "21px";
-            endLabel.style.right = "11px";
+            endLabel.style.top = "31px";
+            endLabel.style.right = "7px";
             endLabel.style.color = "green";
             endLabel.style.fontWeight = "900";
+
             endRange.style.position = "relative";
-            endRange.style.width = "80px";
+            endRange.style.width = "70px";
+            endRange.style.left = "10px";
+            endRange.style.padding = "8px";
             endRange.style.borderRadius = "5px";
+            endRange.style.fontFamily = "Arial, sans-serif";
+            endRange.style.fontSize = "14px";
+            endRange.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
+            endRange.style.transition = "border-color 0.3s, box-shadow 0.3s";
+
+            document.body.style.marginRight = "20px";
+
+            endRange.addEventListener("mouseenter", () => {
+                endRange.style.borderColor = "#666"; // Darken border color on hover
+                endRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.3)"; // Add a slightly stronger box shadow on hover
+            });
+            
+            // Reset border color and box shadow on mouse leave
+            endRange.addEventListener("mouseleave", () => {
+                endRange.style.borderColor = "#7d7c7c"; // Reset border color on mouse leave
+                endRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)"; // Reset box shadow on mouse leave
+            });
 
             deleteStock.style.marginTop = "10px";
             deleteStock.style.position = "relative";
