@@ -37,7 +37,7 @@ function updateView() {
                 const priceRangeExplainHover = document.createElement("div");
                 priceRangeExplainHover.style.position = "absolute";
                 priceRangeExplainHover.style.top = "-115%";
-                priceRangeExplainHover.style.right = "28vw";
+                priceRangeExplainHover.style.right = "24vw";
                 priceRangeExplainHover.style.width = "70vw";
                 priceRangeExplainHover.style.padding = "0 10px";
                 priceRangeExplainHover.style.backgroundColor = "white";
@@ -51,7 +51,7 @@ function updateView() {
                 const priceRangeExplainHoverText = document.createElement("p");
                 priceRangeExplainHoverText.innerHTML = "Once you set your preferred price range, we will notify you when the stock price falls out of the range.";
                 priceRangeExplainHoverText.style.color = "#333";
-                priceRangeExplainHoverText.style.fontFamily = "Arial, sans-serif";
+                priceRangeExplainHoverText.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
                 priceRangeExplainHoverText.style.lineHeight = "1.5";
 
                 priceRangeExplainHover.appendChild(priceRangeExplainHoverText);
@@ -142,9 +142,6 @@ function updateView() {
             stockItem.appendChild(stockPriceRange);
 
             const deleteStock = document.createElement("button");
-            deleteStock.innerHTML = "Delete";
-            deleteStock.style.color = "red";
-            deleteStock.style.cursor = "pointer";
             stockItem.appendChild(deleteStock);
 
             deleteStock.addEventListener("click", () => {
@@ -179,20 +176,19 @@ function updateView() {
             startRange.style.left = "10px";
             startRange.style.padding = "8px";
             startRange.style.borderRadius = "5px";
-            startRange.style.fontFamily = "Arial, sans-serif";
+            startRange.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
             startRange.style.fontSize = "14px";
             startRange.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
             startRange.style.transition = "border-color 0.3s, box-shadow 0.3s";
 
             startRange.addEventListener("mouseenter", () => {
-                startRange.style.borderColor = "#666"; // Darken border color on hover
-                startRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.3)"; // Add a slightly stronger box shadow on hover
+                startRange.style.borderColor = "#666";
+                startRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.3)";
             });
             
-            // Reset border color and box shadow on mouse leave
             startRange.addEventListener("mouseleave", () => {
-                startRange.style.borderColor = "#7d7c7c"; // Reset border color on mouse leave
-                startRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)"; // Reset box shadow on mouse leave
+                startRange.style.borderColor = "#7d7c7c";
+                startRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
             });
             
 
@@ -207,7 +203,7 @@ function updateView() {
             endRange.style.left = "10px";
             endRange.style.padding = "8px";
             endRange.style.borderRadius = "5px";
-            endRange.style.fontFamily = "Arial, sans-serif";
+            endRange.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
             endRange.style.fontSize = "14px";
             endRange.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
             endRange.style.transition = "border-color 0.3s, box-shadow 0.3s";
@@ -215,20 +211,39 @@ function updateView() {
             document.body.style.marginRight = "20px";
 
             endRange.addEventListener("mouseenter", () => {
-                endRange.style.borderColor = "#666"; // Darken border color on hover
-                endRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.3)"; // Add a slightly stronger box shadow on hover
+                endRange.style.borderColor = "#666";
+                endRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.3)";
             });
             
-            // Reset border color and box shadow on mouse leave
             endRange.addEventListener("mouseleave", () => {
-                endRange.style.borderColor = "#7d7c7c"; // Reset border color on mouse leave
-                endRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)"; // Reset box shadow on mouse leave
+                endRange.style.borderColor = "#7d7c7c";
+                endRange.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
             });
 
-            deleteStock.style.marginTop = "10px";
+            
+            deleteStock.innerHTML = "Delete";
             deleteStock.style.position = "relative";
             deleteStock.style.left = "32vw";
+            deleteStock.style.backgroundColor = "#ff5252";
+            deleteStock.style.color = "#fff";
+            deleteStock.style.border = "none";
+            deleteStock.style.padding = "8px 16px";
+            deleteStock.style.borderRadius = "5px";
+            deleteStock.style.cursor = "pointer";
+            deleteStock.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
+            deleteStock.style.fontSize = "14px";
             deleteStock.style.fontWeight = "bold";
+            deleteStock.style.marginTop = "10px";
+            deleteStock.style.transition = "background-color 0.3s";
+
+            deleteStock.addEventListener("mouseenter", () => {
+                deleteStock.style.backgroundColor = "#ff6b6b";
+            });
+
+            deleteStock.addEventListener("mouseleave", () => {
+                deleteStock.style.backgroundColor = "#ff5252";
+            });
+
 
             stockItem.appendChild(document.createElement("br"));
             stockItem.appendChild(document.createElement("hr"));
