@@ -33,7 +33,7 @@ def findTicker(params):
     # ticker = ""
     # for res in jsonData["organic_results"]:
     #     if res["domain"] == "finance.yahoo.com":
-    #         ticker = res["displayed_link"].split(" › ")[-1]
+    #         ticker = res["link"].split("/")[-2]
     #         break
     # return jsonify({"ticker": ticker})
     return jsonify({"ticker": "AMZN"})
