@@ -50,7 +50,7 @@ function updateView() {
                 const priceRangeExplainHover = document.createElement("div");
                 priceRangeExplainHover.style.position = "absolute";
                 priceRangeExplainHover.style.top = "-115%";
-                priceRangeExplainHover.style.right = "20vw";
+                priceRangeExplainHover.style.right = "24vw";
                 priceRangeExplainHover.style.width = "70vw";
                 priceRangeExplainHover.style.padding = "0 10px";
                 priceRangeExplainHover.style.backgroundColor = "white";
@@ -187,7 +187,7 @@ function updateView() {
             });
 
             stockTicker.style.textAlign = "center";
-            stockTicker.style.marginLeft = "25px";
+            stockTicker.style.marginLeft = "24px";
             stockPriceRange.style.marginTop = "-21px";
             stockPriceRange.style.display = "flex";
             stockPriceRange.style.gap = "30px";
