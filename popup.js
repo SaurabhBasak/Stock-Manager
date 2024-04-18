@@ -5,6 +5,19 @@ function updateView() {
             : {};
 
         const stockList = document.getElementById("stock-list");
+
+        if (Object.keys(currentStocks).length === 0) {
+            const noStocks = document.createElement("p");
+            noStocks.innerHTML = "Add some stocks!";
+            noStocks.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
+            noStocks.style.textAlign = "center";
+            noStocks.style.fontSize = "18px";
+            noStocks.style.whiteSpace = "nowrap";
+            noStocks.style.display = "inline-block";
+            noStocks.style.marginLeft = "10px";
+            noStocks.style.fontWeight = "700";
+            stockList.appendChild(noStocks);
+        }
         let index = 0;
         for (const ticker in currentStocks) {
             index++;
@@ -147,6 +160,18 @@ function updateView() {
             deleteStock.addEventListener("click", () => {
                 stockItem.remove();
                 delete currentStocks[ticker];
+                if (Object.keys(currentStocks).length === 0) {
+                    const noStocks = document.createElement("p");
+                    noStocks.innerHTML = "Add some stocks!";
+                    noStocks.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
+                    noStocks.style.textAlign = "center";
+                    noStocks.style.fontSize = "18px";
+                    noStocks.style.whiteSpace = "nowrap";
+                    noStocks.style.display = "inline-block";
+                    noStocks.style.marginLeft = "10px";
+                    noStocks.style.fontWeight = "700";
+                    stockList.appendChild(noStocks);
+                }
                 chrome.storage.sync.set({
                     currentStocks: JSON.stringify(currentStocks),
                 });
