@@ -4,9 +4,14 @@ function updateView() {
             ? JSON.parse(obj["currentStocks"])
             : {};
 
+
+        console.log(currentStocks);
+
         const stockList = document.getElementById("stock-list");
 
         if (Object.keys(currentStocks).length === 0) {
+            console.log("No stocks")
+
             const noStocks = document.createElement("p");
             noStocks.innerHTML = "Add some stocks!";
             noStocks.style.fontFamily = "Google Sans,Roboto,Helvetica,Arial,sans-serif";
@@ -27,7 +32,7 @@ function updateView() {
             stockItem.appendChild(stockTicker);
             stockTicker.innerHTML = `${ticker}: ${currentStocks[ticker].price}`;
 
-            if (index === 1) {            
+            if (index === 1) {         
                 const priceRangeExplain = document.createElement("div");
                 priceRangeExplain.style.position = "relative";
                 priceRangeExplain.style.left = "22vw";

@@ -28,15 +28,16 @@ def getSearchParams():
 
 
 def findTicker(params):
-    # api_result = requests.get("https://api.scaleserp.com/search", params)
-    # jsonData = api_result.json()
-    # ticker = ""
-    # for res in jsonData["organic_results"]:
-    #     if res["domain"] == "finance.yahoo.com":
-    #         ticker = res["link"].split("/")[-2]
-    #         break
-    # return jsonify({"ticker": ticker})
-    return jsonify({"ticker": "AMZN"})
+    api_result = requests.get("https://api.scaleserp.com/search", params)
+    jsonData = api_result.json()
+    ticker = ""
+    for res in jsonData["organic_results"]:
+        if res["domain"] == "finance.yahoo.com":
+            ticker = res["link"].split("/")[-2]
+            # print(ticker)
+            break
+    return jsonify({"ticker": ticker})
+    # return jsonify({"ticker": "AMZN"})
 
 
 @app.route("/stock", methods=["POST"])
